@@ -31,15 +31,13 @@ h1 {
 
 .container {
     width: 100%;
+    position: relative;
     background-color:rgba(150,200,220,0.9);
     border-radius: 5px;
     padding: 20px;
     color: rgba(20,50,80,1);
     font-size: 1.2rem;
-}
-
-.date {
-    
+    min-height: 600px;
 }
 
 .input {
@@ -61,12 +59,13 @@ h1 {
     cursor: pointer;
 }
 
-.pending__info {
-
-}
-
 .pending__list, .completed__list {
     margin: 10px 0 20px 0;
+}
+
+@keyframes anim {
+    0%   {top: 0%;}
+    100% {width: 100%;}
 }
 
 div[class^="task"] {
@@ -74,6 +73,9 @@ div[class^="task"] {
     padding: 0px;
     margin-bottom: 10px;
     display:flex;
+    position: relative;
+    overflow: hidden;
+    animation: anim 1s;
 }
 
 input[type="checkbox"]:hover{
@@ -81,24 +83,47 @@ input[type="checkbox"]:hover{
 }
 
 .intask__text {
-    flex:90%;
     padding:10px;
+    display: inline-block;
+}
+
+@keyframes trashin {
+    0%   {right: -40px;}
+    100% {right: 0px;}
 }
 
 .intask__delete {
-    flex: 10%;
+    display: none;
+    position: absolute;
+    right: 0;
     background-color: rgba(200,35,35,.6);
     color: rgb(235,235,235);
     font-size: 1.5rem;
     cursor: pointer;
     text-align: center;
-    line-height: 3rem;
+    line-height: 2.5rem;
 }
 
+.intask__delete--hover {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    background-color: rgba(200,35,35,.6);
+    color: rgb(235,235,235);
+    font-size: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    line-height: 2.5rem;
+    animation: trashin 0.3s;
+    width: 40px;
+}
 
 .buttons {
-    display:flex;
-    
+    display:flex;    
+}
+
+.buttons--hide {
+    display: none;
 }
 
 .buttons__hide, .buttons__clear{
@@ -125,4 +150,37 @@ input[type="checkbox"]:hover{
 
 .completed--hide {
     display: none;
+}
+
+.pending {
+    display: block;
+}
+
+.pending--hide {
+    display: none;
+}
+            
+.completed__list {
+    text-decoration: line-through;
+}
+
+.nothing {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+
+.nothing--hide {
+    display: none;
+}
+
+@keyframes ai {
+    0% {top: -100px}
+    100% {top: 0px;}
+}
+
+.nothing img {
+    position: relative;
+    margin: 80px 0 30px 0;
+    animation: ai 3s;
 }
