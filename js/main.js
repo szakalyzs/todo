@@ -17,10 +17,10 @@ function getTasks() {
         task = JSON.parse(localStorage.getItem(localStorage.key(i)));
         key = localStorage.key(i);
         if (task.completed) {
-            putTask(task.text, completedList, key);
+            putTask(task.text, completedList, key, task.completed);
             completedCount++;
         } else {
-            putTask(task.text, pendingList, key);
+            putTask(task.text, pendingList, key, task.completed);
             pendingCount++;
         }
     }
@@ -57,26 +57,48 @@ function taskCounters() {
     });
 })();
 
-function putTask(text, list, key) {   
+function putTask(text, list, key, completed) {   
     const code =    `<div class="${key}">
-                        <input type="checkbox">
-                        ${text}
+                        <div class="intask__text">
+                            <input type="checkbox" class="checkbox"
+                            ${completed ? `checked` : ``}> ${text}
+                        </div>
+                        <div class="intask__delete">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
                     </div>`
     list.insertAdjacentHTML('afterbegin', code);
     checkTask();
 }
 
 function checkTask() {
-    const checkBoxes = document.querySelectorAll('[class^=task]');
-    for (let i = 0; i < checkBoxes.length; i++) {
-        checkBoxes[i].addEventListener('click', () => {
-            const taskObject = JSON.parse(localStorage.getItem(checkBoxes[i].className));
+    const tasks = document.querySelectorAll('[class^=task]');
+    const checkboxes = document.querySelectorAll('.checkbox');
+    for (let i = 0; i < tasks.length; i++) {
+        checkboxes[i].addEventListener('change', () => {
+            const taskObject = JSON.parse(localStorage.getItem(tasks[i].className));
             taskObject.completed = true;
-            localStorage.setItem(checkBoxes[i].className, JSON.stringify(taskObject));
-            checkBoxes[i].disabled = true;
+            localStorage.setItem(tasks[i].className, JSON.stringify(taskObject));
             completedCount++;
             getTasks();
         })       
     }
     
 };
+
+(function toggleCompleted() {
+    const hideButton = document.querySelector('.buttons__hide');
+    hideButton.addEventListener('click', () => {
+        const completed = document.querySelector('.completed');
+        completed.classList.toggle('completed--hide');
+        hideButton.textContent == 'Show Complete' ? hideButton.textContent = 'Hide Complete' : hideButton.textContent = 'Show Complete';
+    })
+})();
+
+(function clearAll() {
+    const clearButton = document.querySelector('.buttons__clear');
+    clearButton.addEventListener('click', () => {
+        localStorage.clear();
+        getTasks();
+    })
+})();
