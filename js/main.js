@@ -5,9 +5,6 @@
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dateArea = document.querySelector('.date');
     const dayName = days[now.getDay()];
-    const month = now.getMonth();
-    const day = now.getDate();
-    const year = now.getFullYear();
     const full = [now.getMonth(), now.getDate(), now.getFullYear()].join('-');
     const date2Rows = `${dayName}<br>${full}`;
     dateArea.insertAdjacentHTML('afterbegin', date2Rows);
@@ -45,14 +42,16 @@ function getTasks() {
     completedList.textContent = '';
     pendingList.textContent = '';
     for (let i = 0; i < localStorage.length; i++) {
-        task = JSON.parse(localStorage.getItem(localStorage.key(i)));
         key = localStorage.key(i);
-        if (task.completed) {
-            putTask(task.text, completedList, key, task.completed);
-            completedCount++;
-        } else {
-            putTask(task.text, pendingList, key, task.completed);
-            pendingCount++;
+        if (key.startsWith('task')) {
+            task = JSON.parse(localStorage.getItem(key));
+            if (task.completed) {
+                putTask(task.text, completedList, key, task.completed);
+                completedCount++;
+            } else {
+                putTask(task.text, pendingList, key, task.completed);
+                pendingCount++;
+            }
         }
     }
     taskCounters();
